@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>선생님 통계 페이지</title>
+    <link rel="stylesheet" href="teacher.css">
+</head>
+<body>
+<main class="wrap">
+    <header class="page-head">
+        <div>
+            <h1>📊 퀴즈 결과 통계</h1>
+            <p class="sub">학생별 점수·분야별 성적을 한눈에 확인하는 선생님용 페이지</p>
+        </div>
+        <a class="btn ghost" href="index.html">← 퀴즈 게임</a>
+    </header>
+
+    <section class="card" id="loader" aria-labelledby="loader-title">
+        <h2 id="loader-title">1. 학생 기록 불러오기</h2>
+        <p class="hint">학생이 내보낸 기록 파일(<code>.json</code>)을 <strong>여러 개 한꺼번에</strong> 선택하세요. 파일 1개가 학생 1명입니다.
+            파일은 이 브라우저 안에서만 읽으며 어디로도 전송되지 않습니다.</p>
+        <div class="drop" id="drop" tabindex="0" role="button" aria-label="기록 파일 선택">
+            <input type="file" id="file-input" accept=".json,application/json" multiple hidden>
+            <strong>파일을 여기에 끌어다 놓거나 클릭해서 선택</strong>
+            <span>예: 민수.json, 지아.json …</span>
+        </div>
+        <div class="row">
+            <button class="btn ghost" id="sample-btn" type="button">가상 예시 데이터로 미리 보기</button>
+            <button class="btn ghost" id="clear-btn" type="button" hidden>불러온 기록 지우기</button>
+        </div>
+        <details class="howto">
+            <summary>기록 파일은 어떻게 만드나요?</summary>
+            <ol>
+                <li>학생이 퀴즈를 푼 <strong>같은 브라우저·같은 주소</strong>에서 F12 → 콘솔을 엽니다.</li>
+                <li><code>copy(localStorage.getItem('gameHistory'))</code> 를 실행합니다.</li>
+                <li>메모장에 붙여넣어 <code>학생이름.json</code>으로 저장합니다.</li>
+            </ol>
+        </details>
+        <ul class="problems" id="problems" aria-live="polite"></ul>
+    </section>
+
+    <div id="report" hidden>
+        <section class="card toolbar" aria-label="보기 설정">
+            <label>모드
+                <select id="mode-select"></select>
+            </label>
+            <label>정렬
+                <select id="sort-select">
+                    <option value="avg">평균 점수</option>
+                    <option value="best">최고 점수</option>
+                    <option value="worst">최저 점수</option>
+                    <option value="accuracy">정답률</option>
+                    <option value="count">플레이 수</option>
+                    <option value="name">이름</option>
+                </select>
+            </label>
+            <p class="notice" id="mode-note"></p>
+        </section>
+
+        <section class="tiles" id="tiles" aria-label="학급 요약"></section>
+
+        <section class="card" aria-labelledby="t1">
+            <div class="tabs" role="tablist">
+                <button role="tab" id="tab-students" aria-selected="true" data-tab="students">학생별</button>
+                <button role="tab" id="tab-categories" aria-selected="false" data-tab="categories">분야별</button>
+            </div>
+            <h2 id="t1" class="sr-only">통계 표</h2>
+            <div class="table-scroll" id="table-area"></div>
+        </section>
+
+        <section class="card" id="detail" hidden aria-live="polite"></section>
+    </div>
+</main>
+
+<script src="storage.js"></script>
+<script src="teacher-stats.js"></script>
+<script src="teacher.js"></script>
+</body>
+</html>
